@@ -26,16 +26,16 @@ public class SubjectPageServlet extends HttpServlet {
 	
 		
 		
-		PrintWriter out=response.getWriter();
+		
 		HttpSession session = request.getSession();
 		String username = (String) session.getAttribute("user");
-		out.println("welcome "+username);
+		
 		
 		
 		
 		if(username == null)
 		{
-			response.sendRedirect("inex.jsp");
+			response.sendRedirect("index.jsp");
 		}
 		
 		Cookie ck[] = request.getCookies();
@@ -47,19 +47,25 @@ public class SubjectPageServlet extends HttpServlet {
 				String name = c.getName();
 				if(name.equals("subject"))
 					{
-						s = s+name;
+						s = name;
 					}
 			}
 		}
-		
+		PrintWriter out=response.getWriter();
+		response.setContentType("text/html");
 		try{
 		Class.forName("com.mysql.jdbc.Driver");
-		Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/booksdata","root","root");
+		Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/test","root","root");
 		String sql="SELECT distinct subject from books";
 		PreparedStatement ps=con.prepareStatement(sql);
 		ResultSet rs=ps.executeQuery();
+		
+		
+		
+		
+		out.println("welcome "+username);
 		out.println("<html>");
-		out.println("<html><body>");
+		out.println("<body>");
 		if(s=="")
 			out.println("<marquee><h4>Attractive Offers On All Books</h4></marquee>");
 		else
@@ -75,8 +81,6 @@ public class SubjectPageServlet extends HttpServlet {
 		out.println("<hr>");
 		out.println("<a href=buyerpage.jsp>Buyer-Page</a>");
 		out.println("</body></html>");
-		
-		
 		
 		
 		

@@ -22,6 +22,7 @@ import javax.servlet.http.HttpSession;
 public class BookDetailsServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+	
 
 		int hitCount = 1;
 		HttpSession session = request.getSession();
@@ -41,29 +42,33 @@ public class BookDetailsServlet extends HttpServlet {
 
 		String code = request.getParameter("code");
 		PrintWriter out = response.getWriter();
+		response.setContentType("text/html");
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/booksdata", "root", "root");
-			String sql = "SELECT * from books where bcode=?";
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/test", "root", "root");
+			String sql = "SELECT * from books where id=?";
 			PreparedStatement ps = con.prepareStatement(sql);
 			ps.setInt(1, Integer.parseInt(code));
 			ResultSet rs = ps.executeQuery();
 			int fakeprice = 0;
 			int fakeprice2;
+			
 			out.println("<html>");
 			out.println("<html><body>");
 			out.println("<h3>Book-Details</h3>");
 			out.println("<hr>");
+			//System.out.println(code);
+			//System.out.println(rs.getString(1));
 			while (rs.next()) {
 
-				String bcode = rs.getString(1);
+				int bcode = rs.getInt(1);
 				String title = rs.getString(2);
 				String author = rs.getString(3);
 				String subject = rs.getString(4);
-				String price = rs.getString(5);
-
+				int price = rs.getInt(5);
+			
 				if (map.get(bookname) > 2 && map.get(bookname) <= 4) {
-					fakeprice = Integer.parseInt(rs.getString(5));
+					fakeprice = (rs.getInt(5));
 					fakeprice += fakeprice * 0.1;
 					out.println("<table border=2>");
 					out.println("<tr>");
@@ -87,10 +92,11 @@ public class BookDetailsServlet extends HttpServlet {
 					out.println("<td>" + fakeprice + "</td>");
 					out.println("</tr>");
 					out.println("</table>");
+					session.setAttribute("price", fakeprice);
 				}
 
 				if (map.get(bookname) > 4) {
-					fakeprice = Integer.parseInt(rs.getString(5));
+					fakeprice = (rs.getInt(5));
 					fakeprice2 = (int) (fakeprice + fakeprice * 0.2);
 					out.println("<table border=2>");
 					out.println("<tr>");
@@ -114,6 +120,7 @@ public class BookDetailsServlet extends HttpServlet {
 					out.println("<td>" + fakeprice + "</td>");
 					out.println("</tr>");
 					out.println("</table>");
+					session.setAttribute("price", fakeprice);
 				}
 
 				if (map.get(bookname) <= 2) {
@@ -139,21 +146,28 @@ public class BookDetailsServlet extends HttpServlet {
 					out.println("<td>" + price + "</td>");
 					out.println("</tr>");
 					out.println("</table>");
+					session.setAttribute("price",price);
 				}
 
 				Cookie c4 = new Cookie("subject", subject);
 				c4.setMaxAge(60 * 60 * 24 * 7);
 				response.addCookie(c4);
 
+		
+			
+			
 			}
 			out.println("<hr>");
+			//session.setAttribute("bcode", rs.getInt(1));
 			out.println("<a href=CartManager?code=" + code + ">Add-To-Cart</a><br>");
 			out.println("<a href=SubjectPageServlet>Subject-Page</a><br>");
 			out.println("<a href=buyerpage.jsp>Buyer-Page</a><br>");
 			out.println("</body></html>");
+			
 
 		} catch (Exception e) {
-			out.println(e);
+			
+			out.println(e);System.out.println("=============================> ");e.printStackTrace();
 		}
-	}
+}
 }

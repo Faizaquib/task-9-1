@@ -35,8 +35,8 @@ public class BookListServlet extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/booksdata", "root", "root");
-			String sql = "SELECT bcode,btitle from books where subject=?";
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/test", "root", "root");
+			String sql = "SELECT id,title from books where subject=?";
 			PreparedStatement ps = con.prepareStatement(sql);
 			ps.setString(1, subject);
 			ResultSet rs = ps.executeQuery();

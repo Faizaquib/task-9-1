@@ -32,7 +32,7 @@ public class SaveUser extends HttpServlet {
 	public void init(){
 		try{
 		Class.forName("com.mysql.jdbc.Driver");
-		con=DriverManager.getConnection("jdbc:mysql://localhost:3306/booksdata","root","root");
+		con=DriverManager.getConnection("jdbc:mysql://localhost:3306/test","root","root");
 		String sql="insert into users values(?,?,?,?,?,?)";
 		ps=con.prepareStatement(sql);
 		}catch(Exception e){
@@ -49,6 +49,7 @@ public class SaveUser extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		PrintWriter out=response.getWriter();
+		response.setContentType("text/html");
 		//reads-request
 		String userid=request.getParameter("userid");
 		String password=request.getParameter("password");

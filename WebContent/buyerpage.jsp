@@ -21,7 +21,7 @@
 	<pre>
 		<a href="SubjectPageServlet">Explore-Store</a>
 		<a href="">Search-Book</a>
-		<a href="">View-Cart</a>
+		<a href="DisplayCart">View-Cart</a>
 		<a href="">Trace-Order</a>
 		<a href="">Logout</a>
 	</pre>

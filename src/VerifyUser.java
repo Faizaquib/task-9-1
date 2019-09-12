@@ -1,19 +1,12 @@
 
 import java.io.IOException;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+//import com.mysql.jdbc.Driver;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,6 +14,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 
 /**
  * Servlet implementation class VerifyUser
@@ -35,6 +30,9 @@ public class VerifyUser extends HttpServlet {
 		String userid = request.getParameter("userid");
 		String password = request.getParameter("password");
 		String utype = request.getParameter("utype");
+		
+		
+		
 		try {
 			if (utype.equals("owner")) {
 				if (userid.equals("admin") && password.equals("indore")) {
@@ -45,8 +43,8 @@ public class VerifyUser extends HttpServlet {
 
 			} else {
 				Class.forName("com.mysql.jdbc.Driver");
-				Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/booksdata", "root", "root");
-				String sql = "SELECT uname FROM USERS where userid=? AND password=?";
+				Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/test", "root", "root");
+				String sql = "SELECT * FROM USERS where id=? AND password=?";
 				PreparedStatement ps = con.prepareStatement(sql);
 				ps.setString(1, userid);
 				ps.setString(2, password);
@@ -76,12 +74,12 @@ public class VerifyUser extends HttpServlet {
 					rd.forward(request, response);
 
 				} else {
-					out.println("INVALID BUYER CREDENTIALS");
+					out.println("INVALID BUYER CREDENTIALS"); 
 				}
 				con.close();
 			}
 		} catch (Exception e) {
-			out.println(e);
+			out.println(e); e.printStackTrace();
 		}
 	}
 
